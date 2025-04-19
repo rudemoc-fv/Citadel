@@ -447,11 +447,12 @@ public class NeuralChatBot {
     
     public static void main(String[] args) throws IOException {
     	
-    	int buf = 0, tem = 0, epo = 0;
+    	int buf = 0, epo = 0;
+    	double tem = 0;
     	
     	for (String arg : args) {
     		if (arg.equals("-h") || arg.equals("--help")) {
-    			System.out.println("GUIDE\nFirstly u need to generate ur model.\nFor this u need to set -b -e -t and put ur text for training in 'chat_corpus.txt' file.\nAfter u can load it by -l.\n\n!!!WARNING!!! For loading u need to set -b and -t of model that u are already generated!!!\n\nUse -l or --load for loading an AI model\nUse -g or --generate for generating ur own model\nUse -e= for setting epoch amount\nUse -b= for setting buffer size\nUse -t= for setting temperature");
+    			System.out.println("GUIDE\nFirstly u need to generate ur model.\nFor this u need to set -b -e -t(1-9) and put ur text for training in 'chat_corpus.txt' file.\nAfter u can load it by -l.\n\n!!!WARNING!!! For loading u need to set -b and -t of model that u are already generated!!!\n\nUse -l or --load for loading an AI model\nUse -g or --generate for generating ur own model\nUse -e= for setting epoch amount\nUse -b= for setting buffer size\nUse -t= for setting temperature");
     		} else if (arg.equals("-v") || arg.equals("--version")) {
                 System.out.println("Citadel version: 1.0");
                 
@@ -462,10 +463,13 @@ public class NeuralChatBot {
     		}else if (arg.startsWith("-b=")) {
                 String output = arg.substring(3);
                 buf = Integer.parseInt(output); 
+                //System.out.println(buf);
                 
     		}else if (arg.startsWith("-t=")) {
                 String output = arg.substring(3);
-                tem = Integer.parseInt(output);   
+                double ou = Double.parseDouble(output);
+                tem = 1/ou;   
+                //System.out.println(1/ou);
                     
     		} else if (arg.equals("-l") || arg.equals("--load")) {
     			NeuralChatBot loadedBot = new NeuralChatBot(buf, tem);
