@@ -446,14 +446,38 @@ public class NeuralChatBot {
     
     
     public static void main(String[] args) throws IOException {
-        NeuralChatBot bot = new NeuralChatBot(256, 0.7); // buffer and temperature
-        bot.train("chat_corpus.txt", 2); // gens
-        bot.saveModel("saved_model");
-        bot.startChat();
-        
-        //NeuralChatBot loadedBot = new NeuralChatBot(1, 0.9);
-        //loadedBot.loadModel("saved_model");
-        
-        //loadedBot.startChat();
+    	
+    	int buf = 0, tem = 0, epo = 0;
+    	
+    	for (String arg : args) {
+    		if (arg.equals("-h") || arg.equals("--help")) {
+    			System.out.println("GUIDE\nFirstly u need to generate ur model.\nFor this u need to set -b -e -t and put ur text for training in 'chat_corpus.txt' file.\nAfter u can load it by -l.\n\n!!!WARNING!!! For loading u need to set -b and -t of model that u are already generated!!!\n\nUse -l or --load for loading an AI model\nUse -g or --generate for generating ur own model\nUse -e= for setting epoch amount\nUse -b= for setting buffer size\nUse -t= for setting temperature");
+    		} else if (arg.equals("-v") || arg.equals("--version")) {
+                System.out.println("Citadel version: 1.0");
+                
+    		}else if (arg.startsWith("-e=")) {
+                    String output = arg.substring(3);
+                    epo = Integer.parseInt(output);   
+                    
+    		}else if (arg.startsWith("-b=")) {
+                String output = arg.substring(3);
+                buf = Integer.parseInt(output); 
+                
+    		}else if (arg.startsWith("-t=")) {
+                String output = arg.substring(3);
+                tem = Integer.parseInt(output);   
+                    
+    		} else if (arg.equals("-l") || arg.equals("--load")) {
+    			NeuralChatBot loadedBot = new NeuralChatBot(buf, tem);
+    	        loadedBot.loadModel("saved_model");
+    	        loadedBot.startChat();
+    		} else if (arg.equals("-g") || arg.equals("--generate")) {
+    			NeuralChatBot bot = new NeuralChatBot(buf, tem); // buffer and temperature
+    	        bot.train("chat_corpus.txt", epo); // gens
+    	        bot.saveModel("saved_model");
+    	        bot.startChat();
+    	        
+    		}
+    	}
     }
 }
